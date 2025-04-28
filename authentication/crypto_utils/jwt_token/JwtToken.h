@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <string>
 
 #include <boost/beast.hpp>
 #include <boost/beast/core.hpp>
@@ -13,7 +12,6 @@ namespace crypto
 {
 	namespace jwt_token
 	{
-
 		namespace json = boost::json;
 
 		class JwtToken
@@ -24,7 +22,6 @@ namespace crypto
 			static const std::string GenerateJWT(const std::string& secret, const json::object& header, const json::object& payload);
 		private:
 			static std::string EncodeBase64Url(const std::string& data);
-
 		};
 	} // namespace jwt_token
 } // namespace crypto

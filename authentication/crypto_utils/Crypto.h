@@ -5,18 +5,17 @@
 
 #include <openssl/sha.h>
 #include <openssl/rand.h>
-#include <openssl/core_names.h>
-#include <openssl/params.h>
-#include <openssl/thread.h>
-#include <openssl/kdf.h>   
 
 #include "./jwt_token/JwtToken.h"
+#include "./password_argon2id/PasswordArgon2id.h"
 
 namespace crypto
 {
-	// Hash the password using ARGON2ID
-	const std::string HashPassword(const std::string& password);
-
+	enum bytes
+	{
+		sha256 = 32,
+		salt_size = 16
+	};
 	// Generates a cryptographically secure random key (256 bits)
-	const std::string GenerateRandomKey();
+	const std::string GenerateRandomKey(const size_t bytes);
 } // namespace crypto

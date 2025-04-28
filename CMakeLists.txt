@@ -13,7 +13,7 @@ find_package(Boost 1.79 REQUIRED COMPONENTS json)
 
 set(OPENSSL_ROOT_DIR /opt/openssl-3.0)
 set(OPENSSL_INCLUDE_DIR /opt/openssl-3.0/include)
-set(OPENSSL_LIBRARIES /opt/openssl-3.0/lib)
+set(OPENSSL_LIBRARIES /opt/openssl-3.0/lib64)
 
 find_package(OpenSSL REQUIRED)
 
@@ -21,7 +21,7 @@ include_directories(${Boost_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR})
 
 file(GLOB authentication_src "authentication/*.cpp")
 file(GLOB authentication_web_server_src "authentication/web_server/*.cpp")
-file(GLOB authentication_crypto_src "authentication/crypto_utils/*.cpp" "authentication/crypto_utils/jwt_token/*.cpp")
+file(GLOB authentication_crypto_src "authentication/crypto_utils/*.cpp" "authentication/crypto_utils/jwt_token/*.cpp" "authentication/crypto_utils/password_argon2id/*.cpp")
 
 add_executable(AuthenticationService 
     ${authentication_src} 

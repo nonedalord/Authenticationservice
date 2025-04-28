@@ -47,9 +47,20 @@ int main()
 		{"iat", 1516239022}
 	};
 	std::clog << "<main> Authenticationservice started!" << std::endl;
-	std::string secret_key = crypto::GenerateRandomKey();
+	std::string secret_key = crypto::GenerateRandomKey(32);
 	std::cout << "JWT: " << Token::GenerateJWT(secret_key, header, payload) << std::endl;
-	//crypto::HashPassword("!234");
+	try
+	{
+		crypto::password::PasswordArgon2id pass;
+		std::cout << pass.HashPassword("dsafdasvxc321das") << std::endl;
+		std::cout << pass.HashPassword("dsbvc3DASdasas") << std::endl;
+		std::cout << pass.HashPassword("321DSAfdsfdsdsa3vfdg") << std::endl;
+		std::cout << pass.HashPassword("3231-#@!^&&^%1DSAfdsfdsdsa3vfdg") << std::endl;
+	}
+	catch (const crypto::password::PasswordException& err)
+	{
+		std::cerr << err.what() << std::endl;
+	}
 	/*while (!g_terminated)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(1));
