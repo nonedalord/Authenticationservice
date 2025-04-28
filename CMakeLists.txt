@@ -36,7 +36,7 @@ target_link_libraries(AuthenticationService
   # ${PQ_LIB} 
     Boost::boost 
     Boost::json 
-    OpenSSL::SSL 
-    OpenSSL::Crypto 
+    /opt/openssl-3.0/lib64/libcrypto.so
+    /opt/openssl-3.0/lib64/libssl.so
   # spdlog::spdlog_header_only
 )
