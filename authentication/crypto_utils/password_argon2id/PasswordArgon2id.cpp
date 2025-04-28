@@ -17,12 +17,12 @@ m_memcost(memcost), m_lanes(lanes), m_kdf(nullptr, EVP_KDF_free), m_ctx(OSSL_LIB
     }
     if (OSSL_set_max_threads(m_ctx.get(), m_threads) != 1)
     {
-        throw PasswordException("Failed to set OpenSSL threads");
+        throw PasswordException("Failed to set threads (" + std::to_string(m_threads) + ")");
     }
     EVP_KDF* kdf = nullptr;
     if ((kdf = EVP_KDF_fetch(m_ctx.get(), crypto::password::algoritm_name.c_str(), nullptr)) == nullptr)
     {
-        throw PasswordException("Failed to reinitialize KDF");
+        throw PasswordException("KDF fetch failed(" + crypto::password::algoritm_name + ")");
     }
     m_kdf.reset(kdf);
 }
@@ -38,7 +38,7 @@ std::string crypto::password::PasswordArgon2id::HashPassword(const std::string& 
     std::unique_ptr<EVP_KDF_CTX, decltype(&EVP_KDF_CTX_free)> kctx(EVP_KDF_CTX_new(m_kdf.get()), EVP_KDF_CTX_free);
     if (!kctx)
     {
-        throw PasswordException("Failed to initialize KDF CTX");
+        throw PasswordException("KDF CTX init failed");
     }
 
     std::string psw(password);
@@ -57,7 +57,9 @@ std::string crypto::password::PasswordArgon2id::HashPassword(const std::string& 
 
     if (EVP_KDF_derive(kctx.get(), &result[0], m_outlen, params) != 1)
     {
-        throw PasswordException("Failed to derive");
+        std::ostringstream oss;
+        oss << "Derivation failed(t = " << m_threads << ", m=" << m_memcost << ", lanes=" << m_lanes << ")";
+        throw PasswordException(oss.str());
     }
 
     hex_str = OPENSSL_buf2hexstr(result, m_outlen);
