@@ -22,11 +22,12 @@ include_directories(${Boost_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR})
 file(GLOB authentication_src "authentication/*.cpp")
 file(GLOB authentication_web_server_src "authentication/web_server/*.cpp")
 file(GLOB authentication_crypto_src "authentication/crypto_utils/*.cpp" "authentication/crypto_utils/jwt_token/*.cpp" "authentication/crypto_utils/password_argon2id/*.cpp")
-
+file(GLOB env_cfg_src "authentication/env_cfg/*.cpp")
 add_executable(AuthenticationService 
     ${authentication_src} 
     ${authentication_web_server_src} 
     ${authentication_crypto_src}
+    ${env_cfg_src}
 )
 
 target_link_libraries(AuthenticationService 

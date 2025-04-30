@@ -10,6 +10,7 @@
 #include <boost/json.hpp>
 
 #include "./crypto_utils/Crypto.h"
+#include "./env_cfg/EnvCfg.h"
 
 namespace json = boost::json;
 using Token = crypto::jwt_token::JwtToken;
@@ -33,8 +34,12 @@ void SignalHandler(int s)
 
 int main()
 {
+	auto env_conf = std::unordered_map<std::string, std::any>{
+			{"WEB_SERVER_IP", "543543"},
+			{"WEB_SERVER_PORT", 4343}
+	};
+	env_cfg::EnvCfg::InitEnv(env_conf);
 	//CreateLogsDirectory();
-
 	std::signal(SIGINT, SignalHandler);
 	std::signal(SIGTERM, SignalHandler);
 	json::object header = {

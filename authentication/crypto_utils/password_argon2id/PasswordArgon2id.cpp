@@ -1,10 +1,10 @@
 #include "PasswordArgon2id.h"
 
-crypto::password::PasswordArgon2id::PasswordArgon2id() : PasswordArgon2id(crypto::password::default_threads, crypto::password::default_memcost, crypto::password::default_lanes)
+crypto::password::PasswordArgon2id::PasswordArgon2id() : PasswordArgon2id(default_threads, default_memcost, default_lanes)
 {
 }
 
-crypto::password::PasswordArgon2id::PasswordArgon2id(uint32_t threads) : PasswordArgon2id(threads, crypto::password::default_memcost, crypto::password::default_lanes)
+crypto::password::PasswordArgon2id::PasswordArgon2id(uint32_t threads) : PasswordArgon2id(threads, default_memcost, default_lanes)
 {
 }
 
@@ -20,9 +20,9 @@ m_memcost(memcost), m_lanes(lanes), m_kdf(nullptr, EVP_KDF_free), m_ctx(OSSL_LIB
         throw PasswordException("Failed to set threads (" + std::to_string(m_threads) + ")");
     }
     EVP_KDF* kdf = nullptr;
-    if ((kdf = EVP_KDF_fetch(m_ctx.get(), crypto::password::algoritm_name.c_str(), nullptr)) == nullptr)
+    if ((kdf = EVP_KDF_fetch(m_ctx.get(), algoritm_name.c_str(), nullptr)) == nullptr)
     {
-        throw PasswordException("KDF fetch failed(" + crypto::password::algoritm_name + ")");
+        throw PasswordException("KDF fetch failed(" + algoritm_name + ")");
     }
     m_kdf.reset(kdf);
 }
@@ -34,7 +34,7 @@ crypto::password::PasswordArgon2id::~PasswordArgon2id()
 
 std::string crypto::password::PasswordArgon2id::HashPassword(const std::string& password)
 {
-    char* hex_str = NULL;
+    char* hex_str = nullptr;
     std::unique_ptr<EVP_KDF_CTX, decltype(&EVP_KDF_CTX_free)> kctx(EVP_KDF_CTX_new(m_kdf.get()), EVP_KDF_CTX_free);
     if (!kctx)
     {
@@ -44,7 +44,7 @@ std::string crypto::password::PasswordArgon2id::HashPassword(const std::string& 
     std::string psw(password);
 
     unsigned char result[m_outlen];
-    std::string salt = crypto::GenerateRandomKey(crypto::bytes::salt_size);
+    std::string salt = GenerateRandomKey(bytes::salt_size);
     OSSL_PARAM params[6];
     OSSL_PARAM* p = params;
     p = params;

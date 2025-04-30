@@ -16,6 +16,6 @@ namespace crypto
 		sha256 = 32,
 		salt_size = 16
 	};
-	// Generates a cryptographically secure random key (256 bits)
+	// Generates a cryptographically secure random key
 	const std::string GenerateRandomKey(const size_t bytes);
 } // namespace crypto
